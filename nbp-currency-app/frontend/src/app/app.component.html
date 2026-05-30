@@ -1,0 +1,53 @@
+<div class="container">
+  <h1>Kursy walut NBP</h1>
+  <p>Aplikacja pobiera kursy średnie walut z API NBP i zapisuje je w bazie danych.</p>
+
+  <div class="controls">
+    <label>
+      Data od
+      <input type="date" [(ngModel)]="startDate">
+    </label>
+
+    <label>
+      Data do
+      <input type="date" [(ngModel)]="endDate">
+    </label>
+
+    <label>
+      Grupowanie
+      <select [(ngModel)]="groupBy">
+        <option value="year">Lata</option>
+        <option value="quarter">Kwartały</option>
+        <option value="month">Miesiące</option>
+        <option value="day">Dni</option>
+      </select>
+    </label>
+
+    <button (click)="fetchRates()" [disabled]="loading">Pobierz kursy</button>
+    <button (click)="loadRates()" [disabled]="loading">Wyświetl zapisane</button>
+  </div>
+
+  <p *ngIf="message">{{ message }}</p>
+  <p *ngIf="loading">Ładowanie...</p>
+
+  <table *ngIf="filteredRates.length > 0">
+    <thead>
+      <tr>
+        <th>Grupa</th>
+        <th>Data</th>
+        <th>Kod</th>
+        <th>Waluta</th>
+        <th>Kurs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rate of filteredRates">
+        <td>{{ getGroupValue(rate) }}</td>
+        <td>{{ rate.effective_date }}</td>
+        <td>{{ rate.code }}</td>
+        <td>{{ rate.currency }}</td>
+        <td>{{ rate.rate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
